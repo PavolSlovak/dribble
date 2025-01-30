@@ -1,0 +1,77 @@
+
+
+### get users list
+
+POST http://localhost:3001/api/users/login
+Content-Type: application/json
+
+{
+"email": "pavol@pavol.com",
+"password":"123456"
+}
+
+
+### create user
+
+POST http://localhost:3001/api/users/register
+Content-Type: application/json
+
+{
+"name": "Pavol Slovak",
+"email": "pavol@pavol.com",
+"password": "123456"
+}
+
+### update user
+
+PUT http://localhost:3001/api/users/update
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlBhdm9sIFNsb3ZhayIsImVtYWlsIjoicGF2b2xAcGF2b2wuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkeVUxYk5weC9mMzBHSWlzMTdRaTUvT09nZVd6SnRCR29EcnI2WUNLdTc3TGt3YW1SQ0NuVk8iLCJyb2xlIjoidXNlciIsImlhdCI6MTczODAzMDc5NiwiZXhwIjoxNzM4MDM0Mzk2fQ.EcDRarZ9kOoB82tv8R7uK3JFL2jB7cnXd7exrBu0WwM
+
+{
+"name": "Pavol Slovak 1",
+"password": "123456",
+"newPassword": "1234567"
+}
+
+
+
+### delete user
+
+DELETE http://localhost:3001/api/users/delete
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwicm9sZSI6InVzZXIiLCJpYXQiOjE3MzcwODM4OTgsImV4cCI6MTczNzA4NzQ5OH0.hcIxGUWL1An5cTdEo56oP9blCEHf7vXBGnlQLQpWhqg
+
+
+### get todos list
+
+GET http://localhost:3001/api/todos/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJwYXZvbEBwYXZvbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRtQllEek9HQnJPU2MyREt4MklZMDRPTzZFNlUxQlEuRjg3aFp2MTdFT2pVWnl3M3FnZVRMSyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzM3NDU4NTk4LCJleHAiOjE3Mzc0NjIxOTh9.QDdNO4mVOVyeB1b39fS4MQo8RbCWr-kVShqJ0qxfYK8
+
+
+### create todo
+POST http://localhost:3001/api/todos/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJwYXZvbEBwYXZvbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCR5VTFiTnB4L2YzMEdJaXMxN1FpNS9PT2dlV3pKdEJHb0RycjZZQ0t1NzdMa3dhbVJDQ25WTyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzM3NTk5MjU0LCJleHAiOjE3Mzc2MDI4NTR9.uWTSHAPAw6bbqDWRumtvZShnHIpUTC5GTh45W_1rpWU
+
+{
+"status": "done",
+"description": "Todo 1 description"
+}
+
+### update todo
+PUT http://localhost:3001/api/todos/update/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJwYXZvbEBwYXZvbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCR5VTFiTnB4L2YzMEdJaXMxN1FpNS9PT2dlV3pKdEJHb0RycjZZQ0t1NzdMa3dhbVJDQ25WTyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzM3Nzc2NTIyLCJleHAiOjE3Mzc3ODAxMjJ9.EsFBa3LrY0mo5x8XQRCQLAKbUAgNwAfRtWYhoACnHig
+
+{
+
+}
+
+
+### delete todo
+
+DELETE http://localhost:3001/api/todos/delete/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJwYXZvbDJAcGF2b2wuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkZ0ZNQ2sucHpjdS4xZGtwamtTTXhvT2JoUWhIaXRITGhtM3hkeTJ4eERHbUgxWmZGUzk5S2kiLCJyb2xlIjoidXNlciIsImlhdCI6MTczNzA4OTI1NywiZXhwIjoxNzM3MDkyODU3fQ.YtWO-e4f87JDJx2CIWjcMjsCrVdcioli5oblYCAlEYY
