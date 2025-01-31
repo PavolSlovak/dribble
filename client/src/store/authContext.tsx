@@ -1,14 +1,12 @@
 import { HTTPLogin, HTTPRegister, HTTPUpdateProfile } from "@/api/http";
 import { TLogin, TRegister, TUpdateUser, TUser } from "@/types";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { jwtDecode } from "jwt-decode";
 import {
   createContext,
-  Dispatch,
   FC,
   ReactNode,
   Reducer,
-  SetStateAction,
   useContext,
   useEffect,
   useMemo,
