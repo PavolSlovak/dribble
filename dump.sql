@@ -51,7 +51,7 @@ CREATE TABLE todos(
 
 
 -- import dump file
--- psql "postgresql://postgres:PASSWORD@monorail.proxy.rlwy.net:47527/railway" -f dump.sql
+-- psql "postgresql://postgres:PASSWORD@DB_URL:DB_PORT/DATABASE" -f dump.sql
 
 --   or 
--- psql -h monorail.proxy.rlwy.net -p 47527 -U postgres -d railway -f dump.sql
+-- psql -h DB_URL -p DB_PORT -U postgres -d DATABASE -f dump.sql
