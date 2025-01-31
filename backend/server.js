@@ -3,9 +3,8 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const { connectDB } = require("./config/db");
 
-if (process.env.NODE_ENV === "development") {
-  dotenv.config();
-}
+dotenv.config();
+
 const app = express();
 
 connectDB();
@@ -30,6 +29,10 @@ const { router: todoRouter } = require("./routes/todoRoutes");
 app.use("/api/users", userRouter);
 app.use("/api/todos", todoRouter);
 
+// Handle root route
+app.get("/", (req, res) => {
+  res.send("Hello, welcome to the API!");
+});
 if (process.env.NODE_ENV === "development") {
   app.listen(process.env.PORT || 3000, () => {
     console.log(`Server is running on port ${process.env.PORT || 3000}`);
