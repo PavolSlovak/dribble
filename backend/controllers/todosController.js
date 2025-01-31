@@ -36,8 +36,6 @@ const createTodo = async (req, res) => {
 };
 const updateTodo = async (req, res) => {
   try {
-    throw new Error("Test error");
-
     const id = parseInt(req.params.id);
     const user_id = req.user.id;
 
