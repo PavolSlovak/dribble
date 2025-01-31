@@ -9,7 +9,7 @@ import {
 import { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import ValidatedInput, { InputError } from "@/components/Input";
+import ValidatedInput from "@/components/Input";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/store/authContext";
 import { ArrowLeftIcon, StarIcon } from "@heroicons/react/16/solid";
@@ -235,7 +235,7 @@ const Login: FC = () => {
   );
 };
 const Update: FC = () => {
-  const { updateProfile, currentUser, authError } = useAuth();
+  const { updateProfile, currentUser } = useAuth();
   const navigate = useNavigate();
   const {
     register,
