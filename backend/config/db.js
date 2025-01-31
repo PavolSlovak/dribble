@@ -1,5 +1,6 @@
 const { configDotenv } = require("dotenv");
 const { Pool } = require("pg");
+
 configDotenv();
 
 console.log(process.env.USER);
