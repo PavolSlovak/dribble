@@ -1,9 +1,6 @@
 const { configDotenv } = require("dotenv");
 const { Pool } = require("pg");
-
-if (process.env.NODE_ENV !== "production") {
-  configDotenv();
-}
+configDotenv();
 
 console.log(process.env.USER);
 
