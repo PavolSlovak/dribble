@@ -1,7 +1,9 @@
 
 
-CREATE DATABASE `master`;
+DROP TABLE IF EXISTS todos;
+DROP TABLE IF EXISTS users;
 
+-- CREATE TABLE users 
 CREATE TABLE users(
   id SERIAL PRIMARY KEY,
   name varchar(30) NOT NULL,
@@ -10,10 +12,9 @@ CREATE TABLE users(
   role TEXT CHECK(role IN ('admin', 'user')) NOT NULL
 );
 
-INSERT INTO users (username, name, password, role) VALUES ('pavolslovak', "Pavol Slovak" ,'admin', 'admin');
+-- INSERT INTO users (username, name, password, role) VALUES ('pavolslovak', "Pavol Slovak" ,'admin', 'admin');
 
-
-
+-- CREATE TABLE todos
 CREATE TABLE todos(
   id SERIAL PRIMARY KEY,
   description TEXT NOT NULL,
@@ -23,7 +24,7 @@ CREATE TABLE todos(
   timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO todos ( description,status, user_id) VALUES ('Learn SQL from scratch','in_progress', 1);
+-- INSERT INTO todos ( description,status, user_id) VALUES ('Learn SQL from scratch','in_progress', 1);
 
 
 
@@ -49,3 +50,8 @@ INSERT INTO todos ( description,status, user_id) VALUES ('Learn SQL from scratch
 -- psql -U postgres -d <database name> // connect to the database
 
 
+-- import dump file
+-- psql "postgresql://postgres:PASSWORD@monorail.proxy.rlwy.net:47527/railway" -f dump.sql
+
+--   or 
+-- psql -h monorail.proxy.rlwy.net -p 47527 -U postgres -d railway -f dump.sql
