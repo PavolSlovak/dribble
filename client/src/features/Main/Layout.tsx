@@ -17,7 +17,7 @@ export type TError = {
   delete: string | null;
 };
 const Layout: FC = () => {
-  const [newNoteId, setNewNoteID] = useState<TNote["id"]>(0);
+  const [newNote, setNewNote] = useState<TNote>();
   const [isMobile, setIsMobile] = useState(false);
   const [search, setSearch] = useState("");
   const [error, setError] = useState<TError>({
@@ -48,7 +48,7 @@ const Layout: FC = () => {
       HTTPAddNote({ description, status }),
     {
       onSuccess: (response: AxiosResponse<TNote>) => {
-        setNewNoteID(response.data.id);
+        setNewNote(response.data);
         queryClient.invalidateQueries("notes");
         console.log("Note added", response.data);
       },
@@ -75,8 +75,8 @@ const Layout: FC = () => {
         <Navbar setSearch={setSearch} />
         <Outlet
           context={{
-            newNoteId,
-            setNewNoteID,
+            newNote,
+            setNewNote,
             isMobile,
             search,
             setError,

@@ -11,7 +11,7 @@ import {
 } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useOutletContext } from "react-router-dom";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
 import { PencilIcon, StarIcon, TrashIcon } from "@heroicons/react/16/solid";
 import LoadingSpinner from "@/components/LoadingSpinner";
@@ -22,7 +22,7 @@ import { queryClient } from "@/App";
 import { TError } from "./Layout";
 
 type OutletProps = {
-  newNoteId: number;
+  newNote: TNote;
   isMobile: boolean;
   search: string;
   createError: AxiosError<{ message: string }> | null;
@@ -30,7 +30,7 @@ type OutletProps = {
 };
 
 const TodoManager: FC = () => {
-  const { search, newNoteId } = useOutletContext<OutletProps>();
+  const { search, newNote } = useOutletContext<OutletProps>();
   const {
     data: notes,
     error: getNotesError,
@@ -45,7 +45,7 @@ const TodoManager: FC = () => {
     component = <SkeletonLoader />;
   } else if (notes) {
     component = (
-      <NotesGrid notes={notes.data} search={search} newNoteId={newNoteId} />
+      <NotesGrid notes={notes.data} search={search} newNoteId={newNote?.id} />
     );
   } else if (getNotesError) {
     component = (
