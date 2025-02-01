@@ -44,7 +44,8 @@ const Layout: FC = () => {
   }, []);
 
   const { mutate: createMutation } = useMutation(
-    ({ description, status }: TCreateNote) => HTTPAddNote(description, status),
+    ({ description, status }: TCreateNote) =>
+      HTTPAddNote({ description, status }),
     {
       onSuccess: (response: AxiosResponse<TNote>) => {
         setNewNoteID(response.data.id);

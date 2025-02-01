@@ -13,12 +13,12 @@ const Navbar: FC<NavbarProps> = ({ setSearch }) => {
     }
   }, []);
   return (
-    <header className="flex justify-between items-center w-full  py-5 px-10">
+    <header className="flex  justify-between items-center w-full  py-5 px-10">
       <input
         ref={inputRef}
         type="text"
         placeholder="Search..."
-        className="max-w-80 h-10 text-darkGray p-2 rounded-lg outline-none"
+        className="h-10 text-darkGray p-2 rounded-lg outline-none w-1/3 "
         onChange={(e) => setSearch(e.target.value)}
       />
       <Link to="/auth?account" className="btn">

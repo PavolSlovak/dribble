@@ -1,5 +1,5 @@
 import { queryClient } from "@/App";
-import { TNote, TUpdateNote, TUpdateUser } from "@/types";
+import { TCreateNote, TNote, TUpdateNote, TUpdateUser } from "@/types";
 import axios from "axios";
 
 const baseUrl = import.meta.env.VITE_API_URL as string;
@@ -26,14 +26,14 @@ const HTTPGetNotes = async () => {
   });
   return response;
 };
-const HTTPAddNote = async (description: string, note: TNote["status"]) => {
+const HTTPAddNote = async (newNote: TCreateNote) => {
   await queryClient.cancelQueries("notes");
 
   const response = await axios.post(
     `${baseUrl}/todos/create`,
     {
-      description,
-      status: note,
+      description: newNote.description,
+      status: newNote.status,
     },
     {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

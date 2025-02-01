@@ -32,7 +32,7 @@ const Sidebar: FC<SidebarProps> = ({ createMutation }) => {
   };
 
   return (
-    <aside className="flex flex-col w-64  items-center py-4 border-r border-lightGray">
+    <aside className="flex flex-col   items-center py-4 border-r border-lightGray">
       <span className="text-xl tracking-tight p-4">Docket</span>
       <motion.div className="relative flex flex-col pt-14 w-full items-center ">
         <motion.a

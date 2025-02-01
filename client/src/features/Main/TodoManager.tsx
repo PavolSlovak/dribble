@@ -11,7 +11,7 @@ import {
 } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useOutletContext } from "react-router-dom";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
 import { PencilIcon, StarIcon, TrashIcon } from "@heroicons/react/16/solid";
 import LoadingSpinner from "@/components/LoadingSpinner";
@@ -121,7 +121,7 @@ const Note: FC<TNoteProps> = ({ note, isNewNote }) => {
       key={note.id}
       layout
       className={`relative flex flex-col h-40 rounded-2xl p-4 w-full ${color}`}
-      initial={{ x: -100, opacity: 0 }}
+      initial={isNewNote ? { x: -100, opacity: 0 } : { x: 0, opacity: 1 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: 100, opacity: 0 }}
       transition={{ duration: 0.3 }}
