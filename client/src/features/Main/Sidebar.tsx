@@ -2,17 +2,18 @@ import { PlusCircleIcon } from "@heroicons/react/16/solid";
 import { AnimatePresence } from "framer-motion";
 import { FC, MouseEvent, useState } from "react";
 import { motion } from "framer-motion";
-import { TCreateNote, TNote } from "@/types";
+import { TNote } from "@/types";
 import { CATEGORIES } from "@/constants";
 import Dot from "@/components/Dot";
+import { useAuth } from "@/store/authContext";
 
 type SidebarProps = {
-  createMutation: (newNote: TCreateNote) => void;
+  createMutation: (newNote: TNote) => void;
 };
 
 const Sidebar: FC<SidebarProps> = ({ createMutation }) => {
   const [categoriesMenuOpen, setCategoriesMenuOpen] = useState(false);
-
+  const { currentUser } = useAuth();
   const handlePlusClick = () => {
     setCategoriesMenuOpen(!categoriesMenuOpen);
   };
@@ -24,9 +25,14 @@ const Sidebar: FC<SidebarProps> = ({ createMutation }) => {
     e.preventDefault();
 
     // Create a new note with default values
-    const newNote: TCreateNote = {
+    const newNote: TNote = {
+      id: Math.floor(Math.random() * 1000),
       description: "",
       status: category,
+      isfavourite: false,
+      user_id: currentUser!.id,
+      timestamp: new Date().toISOString(),
+      isNew: true, // From the server, this would be undefined
     };
     createMutation(newNote);
   };

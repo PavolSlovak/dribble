@@ -7,6 +7,7 @@ type TNote = {
   isfavourite: boolean;
   user_id: number;
   timestamp: string;
+  isNew?: boolean;
 };
 type TUser = {
   id: number;

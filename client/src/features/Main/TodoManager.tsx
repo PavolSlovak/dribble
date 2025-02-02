@@ -22,7 +22,7 @@ import { queryClient } from "@/App";
 import { TError } from "./Layout";
 
 type OutletProps = {
-  newNote: TNote;
+  newNoteID: TNote["id"];
   isMobile: boolean;
   search: string;
   createError: AxiosError<{ message: string }> | null;
@@ -30,7 +30,7 @@ type OutletProps = {
 };
 
 const TodoManager: FC = () => {
-  const { search, newNote } = useOutletContext<OutletProps>();
+  const { search, newNoteID } = useOutletContext<OutletProps>();
   const {
     data: notes,
     error: getNotesError,
@@ -45,7 +45,7 @@ const TodoManager: FC = () => {
     component = <SkeletonLoader />;
   } else if (notes) {
     component = (
-      <NotesGrid notes={notes} search={search} newNoteId={newNote?.id} />
+      <NotesGrid notes={notes} search={search} newNoteID={newNoteID} />
     );
   } else if (getNotesError) {
     component = (
@@ -82,22 +82,21 @@ const Note: FC<TNoteProps> = ({ note, isNewNote }) => {
   }, [isNewNote]);
   // Mutation update note
 
-  const { mutate: updateMutate, isLoading: isUpdateLoading } = useMutation<
-    AxiosResponse<TNote>,
-    AxiosError<{ message: string }>,
-    TUpdateNote
-  >((note: TUpdateNote) => HTTPUpdateNote(note), {
-    onSuccess: (response: AxiosResponse<TNote>) => {
-      queryClient.invalidateQueries("notes");
-      console.log("Note updated", response);
-    },
-    onError: (error: AxiosError<{ message: string }>) => {
-      const errorMessage = error.response?.data.message || error.message;
+  const { mutate: updateMutate, isLoading: isUpdateLoading } = useMutation(
+    (note: TUpdateNote) => HTTPUpdateNote(note),
+    {
+      onSuccess: (response: AxiosResponse<TNote>) => {
+        queryClient.invalidateQueries("notes");
+        console.log("Note updated", response);
+      },
+      onError: (error: AxiosError<{ message: string }>) => {
+        const errorMessage = error.response?.data.message || error.message;
 
-      setError((prev: TError) => ({ ...prev, update: errorMessage }));
-      console.error("Error updating note", errorMessage);
-    },
-  });
+        setError((prev: TError) => ({ ...prev, update: errorMessage }));
+        console.error("Error updating note", errorMessage);
+      },
+    }
+  );
   const { mutate: deleteMutate, isLoading: isDeleteLoading } = useMutation<
     AxiosResponse<TNote>,
     AxiosError<{ message: string }>
@@ -121,7 +120,7 @@ const Note: FC<TNoteProps> = ({ note, isNewNote }) => {
       key={note.id}
       layout
       className={`relative flex flex-col h-40 rounded-2xl p-4 w-full ${color}`}
-      initial={isNewNote ? { x: -100, opacity: 0 } : { x: 0, opacity: 1 }}
+      initial={note.isNew ? { x: -100, opacity: 0 } : { x: 0, opacity: 1 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: 100, opacity: 0 }}
       transition={{ duration: 0.3 }}
@@ -181,8 +180,8 @@ const SkeletonLoader: FC = () => {
 const NotesGrid: FC<{
   notes: TNote[];
   search: string;
-  newNoteId: number;
-}> = ({ notes, search, newNoteId }) => {
+  newNoteID: number;
+}> = ({ notes, search, newNoteID }) => {
   const filteredNotes = useFilterNotes(notes, search);
   return (
     <div className="flex flex-wrap w-full justify-between ">
@@ -191,7 +190,7 @@ const NotesGrid: FC<{
       )}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 w-full gap-2">
         {filteredNotes.map((note) => (
-          <Note key={note.id} note={note} isNewNote={newNoteId === note.id} />
+          <Note key={note.id} note={note} isNewNote={newNoteID === note.id} />
         ))}
       </div>
     </div>

@@ -136,7 +136,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     try {
       dispatch({ type: "SET_AUTH_ERROR", payload: null });
       const response = await HTTPLogin(inputData);
-      const token = response.data.jwtToken;
+      const token = response.jwtToken;
       localStorage.setItem("token", token);
       const userData = jwtDecode<TUser>(token);
       dispatch({ type: "LOGIN", payload: userData });
@@ -158,7 +158,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     try {
       dispatch({ type: "SET_AUTH_ERROR", payload: null });
       const response = await HTTPUpdateProfile(inputData);
-      dispatch({ type: "UPDATE_PROFILE", payload: response.data });
+      dispatch({ type: "UPDATE_PROFILE", payload: response });
     } catch (error: unknown) {
       const errorMessage =
         (error as AxiosError<{ message: string }>)?.response?.data.message ||
