@@ -47,10 +47,10 @@ const Layout: FC = () => {
     ({ description, status }: TCreateNote) =>
       HTTPAddNote({ description, status }),
     {
-      onSuccess: (response: AxiosResponse<TNote>) => {
-        setNewNote(response.data);
+      onSuccess: (response: TNote) => {
+        setNewNote(response);
         queryClient.invalidateQueries("notes");
-        console.log("Note added", response.data);
+        console.log("Note added", response);
       },
       onError: (error: AxiosError<{ message: string }>) => {
         const errorMessage = error.response?.data.message || error.message;

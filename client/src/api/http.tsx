@@ -5,31 +5,31 @@ import axios from "axios";
 const baseUrl = import.meta.env.VITE_API_URL as string;
 
 const HTTPLogin = async (inputData: { email: string; password: string }) => {
-  const response = await axios.post(`${baseUrl}/users/login`, inputData);
-  return response;
+  const { data } = await axios.post(`${baseUrl}/users/login`, inputData);
+  return data;
 };
 
 const HTTPRegister = async (inputData: { email: string; password: string }) => {
-  const response = await axios.post(`${baseUrl}/users/register`, inputData);
-  return response;
+  const { data } = await axios.post(`${baseUrl}/users/register`, inputData);
+  return data;
 };
 const HTTPUpdateProfile = async (inputData: TUpdateUser) => {
-  const response = await axios.put(`${baseUrl}/users/update`, inputData, {
+  const { data } = await axios.put(`${baseUrl}/users/update`, inputData, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   });
-  return response;
+  return data;
 };
 
 const HTTPGetNotes = async () => {
-  const response = await axios.get(`${baseUrl}/todos`, {
+  const { data } = await axios.get(`${baseUrl}/todos`, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   });
-  return response;
+  return data;
 };
 const HTTPAddNote = async (newNote: TCreateNote) => {
   await queryClient.cancelQueries("notes");
 
-  const response = await axios.post(
+  const { data } = await axios.post(
     `${baseUrl}/todos/create`,
     {
       description: newNote.description,
@@ -39,13 +39,13 @@ const HTTPAddNote = async (newNote: TCreateNote) => {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     }
   );
-  return response;
+  return data;
 };
 
 const HTTPUpdateNote = async (note: TUpdateNote) => {
   await queryClient.cancelQueries("notes");
   console.log("note", note);
-  const response = await axios.put(
+  const { data } = await axios.put(
     `${baseUrl}/todos/update/${note.id}`,
     {
       isfavourite: note.isfavourite,
@@ -56,15 +56,15 @@ const HTTPUpdateNote = async (note: TUpdateNote) => {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     }
   );
-  return response;
+  return data;
 };
 const HTTPDeleteNote = async (id: number) => {
   await queryClient.cancelQueries("notes");
 
-  const response = await axios.delete(`${baseUrl}/todos/delete/${id}`, {
+  const { data } = await axios.delete(`${baseUrl}/todos/delete/${id}`, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   });
-  return response;
+  return data;
 };
 export {
   HTTPLogin,

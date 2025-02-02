@@ -35,7 +35,7 @@ const TodoManager: FC = () => {
     data: notes,
     error: getNotesError,
     isLoading: getNotesLoading,
-  } = useQuery<AxiosResponse<TNote[]>, AxiosError<{ message: string }>>({
+  } = useQuery<TNote[], AxiosError<{ message: string }>>({
     queryKey: "notes",
     queryFn: HTTPGetNotes,
   });
@@ -45,7 +45,7 @@ const TodoManager: FC = () => {
     component = <SkeletonLoader />;
   } else if (notes) {
     component = (
-      <NotesGrid notes={notes.data} search={search} newNoteId={newNote?.id} />
+      <NotesGrid notes={notes} search={search} newNoteId={newNote?.id} />
     );
   } else if (getNotesError) {
     component = (
@@ -89,7 +89,7 @@ const Note: FC<TNoteProps> = ({ note, isNewNote }) => {
   >((note: TUpdateNote) => HTTPUpdateNote(note), {
     onSuccess: (response: AxiosResponse<TNote>) => {
       queryClient.invalidateQueries("notes");
-      console.log("Note updated", response.data);
+      console.log("Note updated", response);
     },
     onError: (error: AxiosError<{ message: string }>) => {
       const errorMessage = error.response?.data.message || error.message;
@@ -104,7 +104,7 @@ const Note: FC<TNoteProps> = ({ note, isNewNote }) => {
   >(() => HTTPDeleteNote(note.id), {
     onSuccess: (response: AxiosResponse) => {
       queryClient.invalidateQueries("notes");
-      console.log("Note deleted", response.data);
+      console.log("Note deleted", response);
     },
     onError: (error: AxiosError<{ message: string }>) => {
       const errorMessage = error.response?.data.message || error.message;
