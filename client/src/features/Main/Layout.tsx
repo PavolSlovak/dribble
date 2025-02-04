@@ -10,6 +10,7 @@ import { queryClient } from "@/App";
 import { useToastTimer } from "../utils/useToastTimer";
 import ErrorBanner from "@/components/ErrorBanner";
 import { AnimatePresence } from "framer-motion";
+import useCreateMutation from "@/api/useCreateMutation";
 
 export type TError = {
   create: string | null;
@@ -25,13 +26,6 @@ const Layout: FC = () => {
     update: null,
     delete: null,
   });
-  /*   useEffect(() => {
-    console.log("error", error);
-    const timer = setTimeout(() => {
-      setError({ create: null, update: null, delete: null });
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [error]); */
 
   useEffect(() => {
     function handleResize() {
@@ -42,57 +36,8 @@ const Layout: FC = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-  /* 
-  const { mutate: createMutation } = useMutation(
-    ({ description, status }: TCreateNote) =>
-      HTTPAddNote({ description, status }),
-    {
-      onSuccess: (response: TNote) => {
-        setNewNote(response);
-        queryClient.invalidateQueries("notes");
-        console.log("Note added", response);
-      },
-      onError: (error: AxiosError<{ message: string }>) => {
-        const errorMessage = error.response?.data.message || error.message;
-        setError((prev) => {
-          return { ...prev, create: errorMessage };
-        });
-        console.error("Error adding note", errorMessage);
-      },
-    }
-  ); */
 
-  const { mutate: createMutation } = useMutation({
-    mutationFn: ({ description, status }: TCreateNote) =>
-      HTTPAddNote({ description, status }),
-    onMutate: async (newNote: TNote) => {
-      setNewNoteID(newNote.id);
-      await queryClient.cancelQueries("notes");
-      const previousNotes = queryClient.getQueryData<TNote[]>("notes");
-      if (previousNotes) {
-        queryClient.setQueryData<TNote[]>("notes", (old: any) => {
-          const favouriteNotes = old.filter((note: TNote) => note.isfavourite);
-          const nonFavouriteNotes = old.filter(
-            (note: TNote) => !note.isfavourite
-          );
-          return [...favouriteNotes, newNote, ...nonFavouriteNotes];
-        });
-      }
-      return { previousNotes };
-    },
-    onError: (error: AxiosError<{ message: string }>, variables, context) => {
-      queryClient.setQueryData("notes", context?.previousNotes ?? []);
-      setError((prev) => ({
-        ...prev,
-        create: error.response?.data.message || error.message,
-      }));
-    },
-    onSettled: (newNote) => {
-      queryClient.invalidateQueries("notes");
-      setNewNoteID(newNote.id);
-    },
-  });
-
+  const { createMutation } = useCreateMutation({ setError, setNewNoteID });
   // Toast error message on create note
   useToastTimer({
     duration: 2000,

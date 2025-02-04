@@ -5,13 +5,16 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./store/authContext.tsx";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorPage } from "./features/ErrorPage.tsx";
+import { NotesProvider } from "./store/notesContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <ErrorBoundary FallbackComponent={ErrorPage}>
     <AuthProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <NotesProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </NotesProvider>
     </AuthProvider>
   </ErrorBoundary>
 );
