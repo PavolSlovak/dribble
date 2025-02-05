@@ -6,7 +6,7 @@ import Note from "./Note";
 const NotesGrid: FC<{
   notes: TNote[];
   search: string;
-  newNoteID: number;
+  newNoteID: number | undefined;
 }> = ({ notes, search, newNoteID }) => {
   const filteredNotes = useFilterNotes(notes, search);
   return (
