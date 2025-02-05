@@ -1,7 +1,7 @@
 import { PencilIcon } from "@heroicons/react/16/solid";
 import { TrashIcon } from "@heroicons/react/16/solid";
 import { motion, AnimatePresence } from "framer-motion";
-import { FC, useState } from "react";
+import { FC, MouseEvent, useState } from "react";
 import { CATEGORIES, colors } from "@/constants";
 import Dot from "@/components/Dot";
 import { TNote, TUpdateNote } from "@/types";
@@ -15,7 +15,13 @@ const EditMenu: FC<{
   const categoriesExceptCurrent = CATEGORIES.filter(
     (category) => category !== note.status
   );
-
+  const handleUpdateCategory = (
+    e: MouseEvent<HTMLAnchorElement>,
+    category: TNote["status"]
+  ) => {
+    e.preventDefault();
+    updateMutate({ id: note.id, status: category });
+  };
   return (
     <div className="relative flex">
       <AnimatePresence>
@@ -25,7 +31,7 @@ const EditMenu: FC<{
               <motion.a
                 href="#"
                 key={category}
-                onClick={() => updateMutate({ id: note.id, status: category })}
+                onClick={(e) => handleUpdateCategory(e, category)}
                 className="absolute flex items-center"
                 initial={{ x: -10 }}
                 animate={{ x: -30 * (index + 1) }}
@@ -51,11 +57,12 @@ const EditMenu: FC<{
           </motion.div>
         )}
       </AnimatePresence>
-      <button className="rounded-full p-2 bg-black ">
-        <PencilIcon
-          className="w-5 h-5"
-          onClick={() => setMenuOpen(!menuOpen)}
-        />
+
+      <button
+        className="rounded-full p-2 bg-black "
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
+        <PencilIcon className="w-5 h-5" />
       </button>
     </div>
   );

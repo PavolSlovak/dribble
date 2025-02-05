@@ -2,33 +2,23 @@ import { queryClient } from "@/App";
 import { TError } from "@/features/Main/Layout";
 import { HTTPDeleteNote } from "./http";
 import { useMutation } from "react-query";
-import { TNote, TUpdateNote } from "@/types";
+import { TUpdateNote } from "@/types";
 import { AxiosError } from "axios";
-import { Dispatch, SetStateAction } from "react";
+import { useNotes } from "@/store/notesContext";
 
-type DeleteMutateProps = {
-  setError: Dispatch<SetStateAction<TError>>;
-};
-const useDeleteMutation = ({ setError }: DeleteMutateProps) => {
+const useDeleteMutation = () => {
+  const { setError } = useNotes();
+  // Delete mutation
   const { mutate: deleteMutate, isLoading: isDeleteLoading } = useMutation({
     mutationFn: ({ id }: TUpdateNote) => HTTPDeleteNote(id),
-    onMutate: async (note: TUpdateNote) => {
-      await queryClient.cancelQueries("notes");
-      const previousNotes = queryClient.getQueryData<TNote[]>("notes");
-      queryClient.setQueryData<TNote[]>("notes", (old: any) =>
-        old.filter((n: TNote) => n.id !== note.id)
-      );
-      return { previousNotes };
+    onSuccess: () => {
+      queryClient.invalidateQueries("notes");
     },
-    onError: (error: AxiosError<{ message: string }>, _, context) => {
-      queryClient.setQueryData("notes", context?.previousNotes);
+    onError: (error: AxiosError<{ message: string }>) => {
       setError((prev: TError) => ({
         ...prev,
         delete: error.response?.data.message || error.message,
       }));
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("notes");
     },
   });
   return { deleteMutate, isDeleteLoading };

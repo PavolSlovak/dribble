@@ -27,7 +27,7 @@ const Layout: FC = () => {
     };
   }, []);
 
-  const { createMutation } = useCreateMutation({ setError, setNewNoteID });
+  const { createMutation } = useCreateMutation();
   // Toast error message on create note
   useToastTimer({
     duration: 2000,

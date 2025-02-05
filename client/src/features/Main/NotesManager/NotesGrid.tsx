@@ -3,7 +3,7 @@ import { TNote } from "@/types";
 import { useFilterNotes } from "@/features/utils/useFilterNotes";
 import Note from "./Note";
 import { useNotes } from "@/store/notesContext";
-
+import { AnimatePresence } from "framer-motion";
 const NotesGrid: FC<{
   notes: TNote[];
 }> = ({ notes }) => {
@@ -15,9 +15,11 @@ const NotesGrid: FC<{
         <p className="text-center w-full">No notes found</p>
       )}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 w-full gap-2">
-        {filteredNotes.map((note) => (
-          <Note key={note.id} note={note} isNewNote={newNoteID === note.id} />
-        ))}
+        <AnimatePresence>
+          {filteredNotes.map((note) => (
+            <Note key={note.id} note={note} isNewNote={newNoteID === note.id} />
+          ))}
+        </AnimatePresence>
       </div>
     </div>
   );

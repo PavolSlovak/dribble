@@ -4,12 +4,11 @@ import { AxiosError, AxiosResponse } from "axios";
 import { TNote, TUpdateNote } from "@/types";
 import { queryClient } from "@/App";
 import { TError } from "@/features/Main/Layout";
-import { Dispatch, SetStateAction } from "react";
+import { useNotes } from "@/store/notesContext";
 
-type UpdateMutateProps = {
-  setError: Dispatch<SetStateAction<TError>>;
-};
-const useUpdateMutation = ({ setError }: UpdateMutateProps) => {
+const useUpdateMutation = () => {
+  const { setError } = useNotes();
+
   const { mutate: updateMutate, isLoading: isUpdateLoading } = useMutation(
     (note: TUpdateNote) => HTTPUpdateNote(note),
     {

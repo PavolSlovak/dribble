@@ -10,6 +10,7 @@ import useUpdateMutation from "@/api/useUpdateMutation";
 import useDeleteMutation from "@/api/useDeleteMutation";
 import EditMenu from "./NoteEditMenu";
 import { useNotes } from "@/store/notesContext";
+import useCreateMutation from "@/api/useCreateMutation";
 
 type NoteProps = {
   note: TNote;
@@ -30,10 +31,11 @@ const Note: FC<NoteProps> = ({ note, isNewNote }) => {
   }, [isNewNote]);
   // Mutation update note
 
-  const { updateMutate, isUpdateLoading } = useUpdateMutation({ setError });
-  const { deleteMutate, isDeleteLoading } = useDeleteMutation({ setError });
+  const { updateMutate, isUpdateLoading } = useUpdateMutation();
+  const { deleteMutate, isDeleteLoading } = useDeleteMutation();
 
   const color = colors[note.status as keyof typeof colors];
+
   return (
     <motion.div
       key={note.id}
@@ -41,7 +43,7 @@ const Note: FC<NoteProps> = ({ note, isNewNote }) => {
       className={`relative flex flex-col h-40 rounded-2xl p-4 w-full ${color}`}
       initial={note.isNew ? { x: -100, opacity: 0 } : { x: 0, opacity: 1 }}
       animate={{ x: 0, opacity: 1 }}
-      exit={{ x: 100, opacity: 0 }}
+      exit={{ x: -100, opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
       <button
@@ -56,7 +58,6 @@ const Note: FC<NoteProps> = ({ note, isNewNote }) => {
         />
       </button>
       {(isUpdateLoading || isDeleteLoading) && <LoadingSpinner diameter={4} />}
-
       <textarea
         name="note"
         ref={noteRef}
