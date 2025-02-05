@@ -11,7 +11,7 @@ type CreateMutationProps = {
   setNewNoteID: Dispatch<SetStateAction<number | undefined>>;
 };
 const useCreateMutation = ({ setError, setNewNoteID }: CreateMutationProps) => {
-  const { mutate: createMutation } = useMutation({
+  const { mutate: createMutation, isLoading: createLoading } = useMutation({
     mutationFn: ({ description, status }: TCreateNote) =>
       HTTPAddNote({ description, status }),
     onMutate: async (newNote: TNote) => {
@@ -41,6 +41,6 @@ const useCreateMutation = ({ setError, setNewNoteID }: CreateMutationProps) => {
       setNewNoteID(newNote.id);
     },
   });
-  return { createMutation };
+  return { createMutation, createLoading };
 };
 export default useCreateMutation;

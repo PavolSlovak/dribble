@@ -2,15 +2,12 @@ import { FC, useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import { Outlet } from "react-router-dom";
-import { TCreateNote, TNote } from "@/types";
-import { HTTPAddNote } from "@/api/http";
-import { AxiosError, AxiosResponse } from "axios";
-import { useMutation } from "react-query";
-import { queryClient } from "@/App";
+
 import { useToastTimer } from "../utils/useToastTimer";
 import ErrorBanner from "@/components/ErrorBanner";
 import { AnimatePresence } from "framer-motion";
 import useCreateMutation from "@/api/useCreateMutation";
+import { useNotes } from "@/store/notesContext";
 
 export type TError = {
   create: string | null;
@@ -18,14 +15,7 @@ export type TError = {
   delete: string | null;
 };
 const Layout: FC = () => {
-  const [newNoteID, setNewNoteID] = useState<number | undefined>();
-  const [isMobile, setIsMobile] = useState(false);
-  const [search, setSearch] = useState("");
-  const [error, setError] = useState<TError>({
-    create: null,
-    update: null,
-    delete: null,
-  });
+  const { setIsMobile, setSearch, setError, error, setNewNoteID } = useNotes();
 
   useEffect(() => {
     function handleResize() {
@@ -49,15 +39,7 @@ const Layout: FC = () => {
       <Sidebar createMutation={createMutation} />
       <main className="relative flex flex-col w-full">
         <Navbar setSearch={setSearch} />
-        <Outlet
-          context={{
-            newNoteID,
-            setNewNoteID,
-            isMobile,
-            search,
-            setError,
-          }}
-        />
+        <Outlet />
       </main>
       <div className="absolute w-full flex justify-center">
         <AnimatePresence>

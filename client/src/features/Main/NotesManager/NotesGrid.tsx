@@ -2,12 +2,12 @@ import { FC } from "react";
 import { TNote } from "@/types";
 import { useFilterNotes } from "@/features/utils/useFilterNotes";
 import Note from "./Note";
+import { useNotes } from "@/store/notesContext";
 
 const NotesGrid: FC<{
   notes: TNote[];
-  search: string;
-  newNoteID: number | undefined;
-}> = ({ notes, search, newNoteID }) => {
+}> = ({ notes }) => {
+  const { search, newNoteID } = useNotes();
   const filteredNotes = useFilterNotes(notes, search);
   return (
     <div className="flex flex-wrap w-full justify-between ">

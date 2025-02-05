@@ -1,36 +1,29 @@
 import { AxiosError } from "axios";
 
-import { Dispatch, FC, SetStateAction } from "react";
+import { FC } from "react";
 import { useQuery } from "react-query";
 
 import SkeletonLoader from "./SkeletonLoader";
 import NotesGrid from "./NotesGrid";
 import { TNote } from "@/types";
 import { HTTPGetNotes } from "@/api/http";
-import { useNotes } from "@/store/notesContext";
 
 const TodoManager: FC = () => {
-  const { newNoteID, search, setNewNoteID } = useNotes();
-  const {
-    data: notes,
-    error: getNotesError,
-    isLoading: getNotesLoading,
-  } = useQuery<TNote[], AxiosError<{ message: string }>>({
+  const { data, error, isLoading } = useQuery<
+    TNote[],
+    AxiosError<{ message: string }>
+  >({
     queryKey: "notes",
     queryFn: HTTPGetNotes,
   });
 
   let component;
-  if (getNotesLoading) {
+  if (isLoading) {
     component = <SkeletonLoader />;
-  } else if (notes) {
-    component = (
-      <NotesGrid notes={notes} search={search} newNoteID={newNoteID} />
-    );
-  } else if (getNotesError) {
-    component = (
-      <p>{getNotesError.response?.data.message || getNotesError.message}</p>
-    );
+  } else if (data) {
+    component = <NotesGrid notes={data} />;
+  } else if (error) {
+    component = <p>{error.response?.data.message || error.message}</p>;
   }
 
   return (
