@@ -1,4 +1,5 @@
 import { TError } from "@/features/Main/Layout";
+import { TNote } from "@/types";
 import {
   FC,
   ReactNode,
@@ -10,6 +11,7 @@ import {
 } from "react";
 
 type NotesState = {
+  setNotes: Dispatch<SetStateAction<TNote[]>>;
   setNewNoteID: Dispatch<SetStateAction<number | undefined>>;
   setSearch: Dispatch<SetStateAction<string>>;
   setError: Dispatch<SetStateAction<TError>>;
@@ -17,6 +19,7 @@ type NotesState = {
 };
 
 type NotesContextType = NotesState & {
+  notes: TNote[];
   error: TError;
   newNoteID: number | undefined;
 
@@ -35,6 +38,7 @@ export const useNotes = () => {
   return context;
 };
 export const NotesProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  const [notes, setNotes] = useState<TNote[]>([]);
   const [newNoteID, setNewNoteID] = useState<number | undefined>();
   const [isMobile, setIsMobile] = useState(false);
   const [search, setSearch] = useState("");
@@ -45,6 +49,8 @@ export const NotesProvider: FC<{ children: ReactNode }> = ({ children }) => {
   });
 
   const value: NotesContextType = {
+    notes,
+    setNotes,
     newNoteID,
     setNewNoteID,
     isMobile,

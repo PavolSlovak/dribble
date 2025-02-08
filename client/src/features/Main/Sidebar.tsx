@@ -6,14 +6,17 @@ import { TNote } from "@/types";
 import { CATEGORIES } from "@/constants";
 import Dot from "@/components/Dot";
 import { useAuth } from "@/store/authContext";
+import { useNotes } from "@/store/notesContext";
 
 type SidebarProps = {
   createMutation: (newNote: TNote) => void;
+  createLoading: boolean;
 };
 
-const Sidebar: FC<SidebarProps> = ({ createMutation }) => {
+const Sidebar: FC<SidebarProps> = ({ createMutation, createLoading }) => {
   const [categoriesMenuOpen, setCategoriesMenuOpen] = useState(false);
   const { currentUser } = useAuth();
+  const { notes } = useNotes();
   const handlePlusClick = () => {
     setCategoriesMenuOpen(!categoriesMenuOpen);
   };
@@ -26,7 +29,7 @@ const Sidebar: FC<SidebarProps> = ({ createMutation }) => {
 
     // Create a new note with default values
     const newNote: TNote = {
-      id: Math.floor(Math.random() * 1000),
+      id: notes.length + 1,
       description: "",
       status: category,
       isfavourite: false,
@@ -58,7 +61,9 @@ const Sidebar: FC<SidebarProps> = ({ createMutation }) => {
                   href="#"
                   key={category}
                   onClick={(e) => handleAddNote(e, category as TNote["status"])}
-                  className="absolute flex items-center"
+                  className={`absolute flex items-center ${
+                    createLoading ? "pointer-events-none" : ""
+                  }`}
                   initial={{ y: 10 }}
                   animate={{ y: 50 * (index + 1) }}
                   exit={{ y: 10 }}

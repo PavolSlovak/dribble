@@ -11,14 +11,25 @@ const useDeleteMutation = () => {
   // Delete mutation
   const { mutate: deleteMutate, isLoading: isDeleteLoading } = useMutation({
     mutationFn: ({ id }: TUpdateNote) => HTTPDeleteNote(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries("notes");
+    onMutate: (deletedNote: TUpdateNote) => {
+      queryClient.cancelQueries("notes");
+      const previousNotes = queryClient.getQueryData<TUpdateNote[]>("notes");
+      if (previousNotes) {
+        queryClient.setQueryData<TUpdateNote[]>(
+          "notes",
+          previousNotes.filter((note) => note.id !== deletedNote.id)
+        );
+      }
+      return { previousNotes };
     },
-    onError: (error: AxiosError<{ message: string }>) => {
-      setError((prev: TError) => ({
-        ...prev,
-        delete: error.response?.data.message || error.message,
-      }));
+    onError: (error: AxiosError<{ message: string }>, _, context) => {
+      setError((prev: TError) => ({ ...prev, delete: error.message }));
+      if (context?.previousNotes) {
+        queryClient.setQueryData("notes", context.previousNotes);
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries("notes");
     },
   });
   return { deleteMutate, isDeleteLoading };

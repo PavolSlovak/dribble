@@ -7,7 +7,7 @@ const getTodos = async (req, res) => {
       [id]
     ); */
     const response = await pool.query(
-      "SELECT * FROM todos WHERE user_id=$1 ORDER BY isfavourite DESC, timestamp DESC",
+      "SELECT * FROM todos WHERE user_id=$1 ORDER BY timestamp DESC",
       [id]
     );
     res.status(200).json(response.rows);

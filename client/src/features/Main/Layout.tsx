@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import { Outlet } from "react-router-dom";
@@ -15,7 +15,7 @@ export type TError = {
   delete: string | null;
 };
 const Layout: FC = () => {
-  const { setIsMobile, setSearch, setError, error, setNewNoteID } = useNotes();
+  const { setIsMobile, setSearch, setError, error } = useNotes();
 
   useEffect(() => {
     function handleResize() {
@@ -27,7 +27,7 @@ const Layout: FC = () => {
     };
   }, []);
 
-  const { createMutation } = useCreateMutation();
+  const { createMutation, createLoading } = useCreateMutation();
   // Toast error message on create note
   useToastTimer({
     duration: 2000,
@@ -36,10 +36,10 @@ const Layout: FC = () => {
   });
   return (
     <div className="container relative flex min-h-screen mx-auto xl:my-10 rounded-2xl bg-white">
-      <Sidebar createMutation={createMutation} />
+      <Sidebar createMutation={createMutation} createLoading={createLoading} />
       <main className="relative flex flex-col w-full">
         <Navbar setSearch={setSearch} />
-        <Outlet />
+        <Outlet context={{ createLoading }} />
       </main>
       <div className="absolute w-full flex justify-center">
         <AnimatePresence>

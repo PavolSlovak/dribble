@@ -4,28 +4,33 @@ import { queryClient } from "@/App";
 import { AxiosError } from "axios";
 import { useMutation } from "react-query";
 import { useNotes } from "@/store/notesContext";
+import { TError } from "@/features/Main/Layout";
 
 const useCreateMutation = () => {
   const { setError, setNewNoteID } = useNotes();
   // Create mutation
   const { mutate: createMutation, isLoading: createLoading } = useMutation({
     mutationFn: HTTPAddNote,
-    onSuccess: (data: TNote) => {
-      queryClient.setQueryData<TNote[]>("notes", (prev) => {
-        if (prev) {
-          return [data, ...prev];
-        }
-        return [data];
-      });
-      setNewNoteID(data.id);
+    onMutate: (newNote: TNote) => {
+      queryClient.cancelQueries("notes");
+      const previousNotes = queryClient.getQueryData<TNote[]>("notes");
+      if (previousNotes) {
+        queryClient.setQueryData<TNote[]>("notes", [newNote, ...previousNotes]);
+      }
+      return { previousNotes };
     },
-    onError: (error: AxiosError<{ message: string }>) => {
-      setError((prev) => ({
-        ...prev,
-        create: error.response?.data.message || error.message,
-      }));
+    onError: (error: AxiosError<{ message: string }>, _, context) => {
+      setError((prev: TError) => ({ ...prev, create: error.message }));
+      if (context?.previousNotes) {
+        queryClient.setQueryData("notes", context.previousNotes);
+      }
+    },
+    onSettled: (data) => {
+      queryClient.invalidateQueries("notes");
+      setNewNoteID(data?.id);
     },
   });
   return { createMutation, createLoading };
 };
+
 export default useCreateMutation;
