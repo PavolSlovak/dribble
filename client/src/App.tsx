@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import TodoManager from "./features/Main/NotesManager/TodoManager";
+import TodoManager from "./features/Main/NotesManager/NotesManager";
 import Layout from "./features/Main/Layout";
 import Auth from "./features/Auth";
 import { PrivateRoute } from "./components/PrivateRoute";

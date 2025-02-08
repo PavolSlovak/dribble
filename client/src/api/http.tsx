@@ -1,5 +1,5 @@
 import { queryClient } from "@/App";
-import { TCreateNote, TNote, TUpdateNote, TUpdateUser } from "@/types";
+import { TCreateNote, TUpdateNote, TUpdateUser } from "@/types";
 import axios from "axios";
 
 const baseUrl = import.meta.env.VITE_API_URL as string;

@@ -9,7 +9,7 @@ import { TNote } from "@/types";
 import { HTTPGetNotes } from "@/api/http";
 import { useOutletContext } from "react-router-dom";
 
-const TodoManager: FC = () => {
+const NotesManager: FC = () => {
   const { data, error, isLoading } = useQuery<
     TNote[],
     AxiosError<{ message: string }>
@@ -40,4 +40,4 @@ const TodoManager: FC = () => {
     </section>
   );
 };
-export default TodoManager;
+export default NotesManager;
